@@ -1,0 +1,68 @@
+version: "3"
+
+services:
+  zookeeper:
+    context: ./hadoop
+    container_name: zookeeper
+    ports:
+      - "2181:2181"
+
+  namenode1:
+    context: ./hadoop
+    container_name: namenode1
+    command: /etc/bootstrap.sh -d
+    volumes:
+      - namenode1:/hadoop/dfs/name
+      - /hadoop/configs:/etc/hadoop/conf
+    ports:
+      - "50070:50070"
+      - "8088:8088"
+    environment:
+      - "CLUSTER_NAME=test-cluster"
+
+  namenode2:
+    context: ./hadoop
+    container_name: namenode2
+    command: /etc/bootstrap.sh -d
+    volumes:
+      - namenode2:/hadoop/dfs/name
+      - /hadoop/configs:/etc/hadoop/conf
+    depends_on:
+      - zookeeper
+
+  datanode1:
+    context: ./hadoop
+    container_name: datanode1
+    command: /etc/bootstrap.sh -d
+    volumes:
+      - datanode1:/hadoop/dfs/data
+      - /hadoop/configs:/etc/hadoop/conf
+    depends_on:
+      - namenode1
+
+  datanode2:
+    context: ./hadoop
+    container_name: datanode2
+    command: /etc/bootstrap.sh -d
+    volumes:
+      - datanode2:/hadoop/dfs/data
+      - /hadoop/configs:/etc/hadoop/conf
+    depends_on:
+      - namenode1
+
+  datanode3:
+    context: ./hadoop
+    container_name: datanode3
+    command: /etc/bootstrap.sh -d
+    volumes:
+      - datanode3:/hadoop/dfs/data
+      - /hadoop/configs:/etc/hadoop/conf
+    depends_on:
+      - namenode1
+
+volumes:
+  namenode1:
+  namenode2:
+  datanode1:
+  datanode2:
+  datanode3:

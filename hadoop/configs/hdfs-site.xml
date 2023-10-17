@@ -1,0 +1,60 @@
+<configuration>
+    <!-- Define the logical names of the NameNodes -->
+    <property>
+        <name>dfs.nameservices</name>
+        <value>myCluster</value>
+    </property>
+
+    <!-- Specify the NameNodes identifiers for myCluster -->
+    <property>
+        <name>dfs.ha.namenodes.myCluster</name>
+        <value>nn1,nn2</value>
+    </property>
+
+    <!-- RPC address for each NameNode -->
+    <property>
+        <name>dfs.namenode.rpc-address.myCluster.nn1</name>
+        <value>namenode1:8020</value>
+    </property>
+    <property>
+        <name>dfs.namenode.rpc-address.myCluster.nn2</name>
+        <value>namenode2:8020</value>
+    </property>
+
+    <!-- HTTP Web UI address for each NameNode -->
+    <property>
+        <name>dfs.namenode.http-address.myCluster.nn1</name>
+        <value>namenode1:50070</value>
+    </property>
+    <property>
+        <name>dfs.namenode.http-address.myCluster.nn2</name>
+        <value>namenode2:50070</value>
+    </property>
+
+    <!-- Enable automatic failover -->
+    <property>
+        <name>dfs.client.failover.proxy.provider.myCluster</name>
+        <value>org.apache.hadoop.hdfs.server.namenode.ha.ConfiguredFailoverProxyProvider</value>
+    </property>
+
+    <!-- Enable HA for the NameNodes -->
+    <property>
+        <name>dfs.ha.automatic-failover.enabled</name>
+        <value>true</value>
+    </property>
+
+    <!-- Journal nodes configuration (assuming the same node for simplicity, otherwise specify each node) -->
+    <property>
+        <name>dfs.namenode.shared.edits.dir</name>
+        <value>qjournal://namenode1:8485;namenode2:8485/myCluster</value>
+    </property>
+
+    <!-- Enable the Quorum Journal Manager -->
+    <property>
+        <name>dfs.journalnode.edits.dir</name>
+        <value>/tmp/hadoop/journal</value>
+    </property>
+
+    <!-- Other possible configurations, like data directories, replication factors, etc. -->
+    <!-- ... -->
+</configuration>
